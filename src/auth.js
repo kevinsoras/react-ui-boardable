@@ -16,11 +16,13 @@ export const authProvider = {
     };
 
     const response = await fetch(url, options);
+
     if (response.ok) {
       const body = await response.json();
       authProvider.isAuthenticated = true;
-      authProvider.token = body.token;
-      window.localStorage.setItem(tokenKey, body.token);
+      authProvider.token = body.data.token;
+      window.localStorage.setItem(tokenKey, body.data.token);      
+      return Promise.resolve(body)
     } else {
       const error = await response.json();
       return Promise.reject(error)

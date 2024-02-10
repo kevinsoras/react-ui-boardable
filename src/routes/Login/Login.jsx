@@ -12,19 +12,18 @@ export async function action({ request }) {
   let formData = await request.formData();
   let username = formData.get("username");
   let password = formData.get("password");
-
   try {
     await authProvider.login(username, password);
+    let redirectTo = formData.get("redirectTo");
+    return redirect(redirectTo || "/");
+
   } catch (error) {
-    let errorMessage="Invalid login attempt"
+    let errorMessage = "Invalid login attempt";
     if (error.error) errorMessage = error.error.message;
     return {
-      error:errorMessage,
+      error: errorMessage,
     };
   }
-
-  let redirectTo = formData.get("redirectTo");
-  return redirect(redirectTo || "/");
 }
 
 function Login() {
