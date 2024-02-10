@@ -1,0 +1,69 @@
+.container {
+  display: flex;
+  justify-content: center;
+  padding: 0px var(--spacing-4, 16px);
+}
+.container-items {
+  display: flex;
+  flex-wrap: wrap;
+  height: var(--spacing-24, 96px);
+  width: var(--width-7xl, 1280px);
+  padding: 27px 0px;
+  justify-content: space-between;
+  align-items: center;
+  align-self: stretch;
+}
+.container-buttons,
+.container-logo {
+  display: flex;
+  flex-direction: row;
+  gap: var(--spacing-4, 16px);
+}
+.logo {
+  width: 36px;
+  height: 36px;
+  flex-shrink: 0;
+  cursor: pointer;
+}
+.title {
+  color: var(--foreground, #171717);
+
+  /* text-2xl/leading-8/bold/tracking-tight */
+  font-family: Inter;
+  font-size: 24px;
+  font-style: normal;
+  font-weight: 700;
+  line-height: 32px; /* 133.333% */
+  letter-spacing: -0.6px;
+  cursor: pointer;
+}
+.button-account,
+.button-logout {
+  display: inline-flex;
+  height: 36px;
+  padding: var(--spacing-2, 8px) var(--spacing-3, 12px);
+  justify-content: center;
+  align-items: center;
+  gap: var(--spacing-2, 8px);
+  flex-shrink: 0;
+  color: var(--secondary-foreground, #262626);
+
+  /* text-sm/leading-5/medium */
+  font-family: Inter;
+  font-size: 14px;
+  font-style: normal;
+  font-weight: 500;
+  line-height: 20px; /* 142.857% */
+  cursor: pointer;
+}
+.button-account {
+  border-radius: var(--rounded-md, 6px);
+  border: 1px solid var(--border, #d4d4d4);
+  background: var(--background, #fff);
+}
+.button-logout {
+  border-radius: var(--rounded-md, 6px);
+  background: var(--secondary, #e5e5e5);
+  border:none;
+
+}

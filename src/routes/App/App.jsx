@@ -3,6 +3,7 @@ import {
 } from "react-router-dom";
 import { authProvider } from '../../auth';
 import './App.css';
+import Header from "../../components/Header/Header";
 
 export async function loader({ request }) {
   if (!authProvider.isAuthenticated) {
@@ -18,6 +19,7 @@ function App() {
   
   return (
     <>
+      <Header/>
       <div>
        Principal
       </div>
