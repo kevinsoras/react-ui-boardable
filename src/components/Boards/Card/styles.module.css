@@ -1,0 +1,16 @@
+.container {
+  display: flex;
+  width: 256px;
+  height: 144px;
+  padding: var(--spacing-4, 16px);
+  justify-content: center;
+  align-items: center;
+  color: #171717;
+  border-radius: var(--rounded-md, 6px);
+  /* text-lg/leading-8/semibold */
+  font-family: Inter;
+  font-size: 18px;
+  font-style: normal;
+  font-weight: 600;
+  line-height: 32px; /* 177.778% */
+}

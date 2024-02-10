@@ -1,9 +1,11 @@
-import {
-  redirect
-} from "react-router-dom";
-import { authProvider } from '../../auth';
-import './App.css';
+import { redirect,useLoaderData } from "react-router-dom";
+import { authProvider } from "../../auth";
+import "./App.css";
 import Header from "../../components/Header/Header";
+
+import styles from "./styles.module.css";
+import Boards from "../../components/Boards/Boards";
+import { getBoards } from "../../services/Boards.service";
 
 export async function loader({ request }) {
   if (!authProvider.isAuthenticated) {
@@ -12,20 +14,22 @@ export async function loader({ request }) {
     return redirect("/login?" + params.toString());
   }
   //Traer data
-  return {}
+  const listBoards = await getBoards()
+  return {listBoards};
 }
 
 function App() {
-  
+  const { listBoards } = useLoaderData();
   return (
     <>
-      <Header/>
-      <div>
-       Principal
+      <Header />
+      <div className={styles.section}>
+        <div className={styles.container}>
+        <Boards initialListBoards={listBoards}/>
+        </div>
       </div>
-      
     </>
-  )
+  );
 }
 
-export default App
+export default App;
