@@ -7,7 +7,7 @@ export async function getBoards(sortyBy=null,order=null) {
   let url = `${URL_BASE}/`;
 
   if(sortyBy && order){
-    url+=`?sortyBy=${sortyBy}&order=${order}`
+    url+=`?sorty-by=${sortyBy}&order=${order}`
   }
   const options = {
     headers: {
