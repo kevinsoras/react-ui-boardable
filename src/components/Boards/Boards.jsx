@@ -1,12 +1,14 @@
 import { useState } from "react";
 import Card from "./Card/Card";
 import styles from "./styles.module.css";
+import { createBoard } from "../../services/Boards.service";
+import ColorPicker from "../ColorPicker/ColorPicker";
 
 function Boards({ initialListBoards }) {
   const [listBoards, setListBoards] = useState(initialListBoards);
   const [formBoard, setFormBoard] = useState({
     title: "",
-    color: "",
+    color: "#E2E8F0",
   });
   const handleChange = (e) => {
     const { name, value } = e.target;
@@ -15,13 +17,19 @@ function Boards({ initialListBoards }) {
       [name]: value,
     }));
   };
-  const handleSubmit = (event) => {
+  const  handleSubmitBoard = async (event) => {
     event.preventDefault();
     const newboard = {
       title: formBoard.title,
-      color: "hsl(10, 57%, 60%)"
+      color: formBoard.color
     };
-    setListBoards([...listBoards, newobject]);
+    try {
+      const createdBoard = await createBoard(newboard)
+      setFormBoard({title:"",color:"#E2E8F0"})
+      setListBoards([...listBoards, createdBoard]);
+    } catch (error) {
+      console.log(error)
+    }
   };
 
   return (
@@ -39,17 +47,21 @@ function Boards({ initialListBoards }) {
         </div>
         {/* <button onClick={addBoards}>prueba add</button> */}
         <div className={styles.listCards}>
-          <form className={styles["create-board"]}>
+          <form style={{backgroundColor:formBoard.color}} onSubmit={handleSubmitBoard} className={styles["create-board"]}>
             <p className={styles["create-title"]}>Board Title</p>
             <input
               name="title"
               type="text"
+              required
               value={formBoard.title}
               onChange={handleChange}
               className={styles["create-input"]}
             />
             <div className={styles["create-buttons"]}>
-              <button type="button">Color picker</button>
+              <div className={styles['color-picker-box']}>
+               <p>Color:</p> 
+              <ColorPicker name="color" onChange={handleChange}></ColorPicker>
+              </div>
               <button className={styles["create-submit"]} type="submit">
                 Create
               </button>
