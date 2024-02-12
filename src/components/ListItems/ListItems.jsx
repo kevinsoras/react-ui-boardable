@@ -2,11 +2,14 @@ import { useState } from "react";
 import Options from "../Options/Options";
 import styles from "./styles.module.css";
 import Item from "./Item.jsx/Item";
-import { createBoardCard } from "../../services/BoardCard.service";
+import {
+  createBoardCard,
+  deleteBoardCard,
+} from "../../services/BoardCard.service";
 
-function ListItems({listDetails,handleDeleteListDetail }) {
+function ListItems({ listDetails, handleDeleteListDetail }) {
   const [add, setAdd] = useState(true);
-  const [listCards,setListCards]=useState(listDetails)
+  const [listCards, setListCards] = useState(listDetails);
   const handleCreateCard = async (event) => {
     event.preventDefault();
     const formData = new FormData(event.target); // Crear un objeto FormData con el formulario
@@ -17,23 +20,34 @@ function ListItems({listDetails,handleDeleteListDetail }) {
       const addCard = {
         id: createdCard.id,
         title: createdCard.title,
-        orders: listCards.cards.length+1,
+        orders: listCards.cards.length + 1,
       };
-      const newListCards = {...listCards};
-      newListCards.cards=[...newListCards.cards,addCard]
+      const newListCards = { ...listCards };
+      newListCards.cards = [...newListCards.cards, addCard];
       setListCards(newListCards);
-      setAdd(true)
+      setAdd(true);
     } catch (error) {
       console.log(error);
     }
     event.target.reset();
   };
-  const handleOptions = async (option)=>{
-    console.log(option)
-    if(option=="delete") await handleDeleteListDetail(listDetails.id)
-
-  }
-
+  const handleOptions = async (option) => {
+    console.log(option);
+    if (option == "delete") await handleDeleteListDetail(listDetails.id);
+  };
+  const handleDeleteBoardCard = async (boardCardId) => {
+    //
+    try {
+      const deletedBoardCard = await deleteBoardCard(boardCardId);
+      const newBoardListCard = { ...listCards };
+      newBoardListCard.cards = listCards.cards.filter(
+        (card) => card.id != deletedBoardCard.id
+      );
+      setListCards(newBoardListCard);
+    } catch (error) {
+      console.log(error);
+    }
+  };
   return (
     <>
       <div className={styles.container}>
@@ -43,7 +57,13 @@ function ListItems({listDetails,handleDeleteListDetail }) {
         </div>
         <div className={styles["list-card"]}>
           {listCards.cards.map((card) => {
-            return <Item key={card.id} card={card}></Item>;
+            return (
+              <Item
+                handleDeleteBoardCard={handleDeleteBoardCard}
+                key={card.id}
+                card={card}
+              ></Item>
+            );
           })}
         </div>
         <div className={styles["box-add"]}>

@@ -1,9 +1,10 @@
 import Options from "../../Options/Options";
 import styles from "./styles.module.css";
 
-function Item({card}) {
-  const handleOptions = (option) => {
+function Item({handleDeleteBoardCard,card}) {
+  const handleOptions = async (option) => {
     console.log(option);
+    if (option == "delete") await handleDeleteBoardCard(card.id);
   };
   return (
     <>
