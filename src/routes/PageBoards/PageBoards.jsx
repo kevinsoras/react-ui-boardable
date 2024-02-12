@@ -110,6 +110,24 @@ function PageBoards() {
                 </Fragment>
               );
             })}
+            {
+              boardsListDetails.length <= 2 && (
+                <form
+                      onSubmit={handleCreateListBoard}
+                      className={styles["box-create"]}
+                    >
+                      <h1 className={styles["title-create"]}>List title</h1>
+                      <input
+                        name="title"
+                        id="title"
+                        className={styles["input-create"]}
+                      ></input>
+                      <button type="submit" className={styles["button-create"]}>
+                        Create new list
+                      </button>
+                    </form>
+              )
+            }
           </div>
         </div>
       </div>
