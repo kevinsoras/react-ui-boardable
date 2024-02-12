@@ -14,12 +14,12 @@ export async function action({ request }) {
   let username = formData.get("username");
   let password = formData.get("password");
   try {
-    await authProvider.login(username, password);
+    await authProvider.signUp(username, password);
     let redirectTo = formData.get("redirectTo");
     return redirect(redirectTo || "/");
 
   } catch (error) {
-    let errorMessage = "Invalid login attempt";
+    let errorMessage = "Invalid Sign attempt";
     if (error.error) errorMessage = error.error.message;
     return {
       error: errorMessage,
@@ -27,7 +27,7 @@ export async function action({ request }) {
   }
 }
 
-function Login() {
+function SignUp() {
   const actionData = useActionData();
   const navigation = useNavigation();
   const location = useLocation();
@@ -79,18 +79,18 @@ function Login() {
             className={styles.button}
             disabled={isSubmitting}
           >
-            {isSubmitting ? "Entering..." : "Login"}
+            {isSubmitting ? "Entering..." : "Signup"}
           </button>
           {actionData?.error && (
             <p className={styles.error}>{actionData.error}</p>
           )}
         </Form>
         <div className={styles["content-link"]}>
-          <Link to="/signup" href="#">Create an account</Link>
+          <Link to="/login" href="#">Login to your account</Link>
           <img src="src/assets/arrow-right.svg" alt="Arrow right"></img>
         </div>
       </div>
     </>
   );
 }
-export default Login;
+export default SignUp;

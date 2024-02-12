@@ -3,6 +3,7 @@ import {App, AppLoader} from "./routes/App";
 import { Login,LoginAction } from "./routes/Login";
 import { PageBoards, PageBoardsLoader } from "./routes/PageBoards";
 import { NotFoundPage } from "./routes/NotFoundPage";
+import {SignUp,SignUpAction} from "./routes/SignUp";
 
 export const router = createBrowserRouter([
   {
@@ -14,6 +15,11 @@ export const router = createBrowserRouter([
     path:"/login",
     action:LoginAction,
     element:<Login/>
+  },
+  {
+    path:"/signup",
+    action:SignUpAction,
+    element:<SignUp/>
   },
   {
     path:"/boards/:boardId",
