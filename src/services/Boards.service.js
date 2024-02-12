@@ -108,3 +108,31 @@ export async function createBoard(board) {
   const body = await response.json();
   return Promise.reject(new Error(body.error));
 }
+
+export async function deleteBoard(boardId) {
+  const url = `${URL_BASE}/${boardId}`;
+  const token = authProvider.token;
+
+  const options = {
+    method: "DELETE",
+    headers: {
+      "Content-Type": "application/json",
+      Authorization: `bearer ${token}`,
+    },
+  };
+
+  const response = await fetch(url, options);
+
+  if (response.ok) {
+    const body = await response.json();
+    return body.data;
+  }
+
+  if (response.status === 401) {
+    authProvider.logout();
+    throw redirect("/login");
+  }
+
+  const body = await response.json();
+  return Promise.reject(new Error(body.error));
+}

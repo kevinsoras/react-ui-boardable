@@ -1,8 +1,8 @@
 /* eslint-disable react-hooks/rules-of-hooks */
 import { authProvider } from "../../auth";
 import { Header } from "../../components/";
-import { redirect, useLoaderData } from "react-router-dom";
-import { getBoard, getBoardsListDetails } from "../../services/Boards.service";
+import { redirect, useLoaderData,useNavigate } from "react-router-dom";
+import { deleteBoard, getBoard, getBoardsListDetails } from "../../services/Boards.service";
 import styles from "./styles.module.css";
 import Options from "../../components/Options/Options";
 import ListItems from "../../components/ListItems/ListItems";
@@ -29,13 +29,11 @@ export async function loader({ request }) {
 }
 
 function PageBoards() {
+  const navigate = useNavigate();
+
   const { boards, boards_listDetails } = useLoaderData();
   const [boardsListDetails,setBoardsListDetails]=useState(boards_listDetails)
-  console.log(boards);
-  console.log(boards_listDetails);
-  const handleOptions = (option) => {
-    console.log(option);
-  };
+
   const handleCreateListBoard = async (event) => {
     event.preventDefault();
     const formData = new FormData(event.target); // Crear un objeto FormData con el formulario
@@ -57,13 +55,24 @@ function PageBoards() {
     event.target.reset();
   };
   const handleDeleteListDetail = async (listBoardId)=>{
-    //
     try {
       const deletedBoardList = await deleteBoardList(listBoardId);
       const newBoardListDetails=boardsListDetails.filter((listDetail)=>
         listDetail.id !=deletedBoardList.id
       )
       setBoardsListDetails(newBoardListDetails)
+    } catch (error) {
+      console.log(error);
+    }
+  }
+  const handleOptions = async (option) => {
+    if (option == "delete") await handleDeleteBoard(boards.id);
+  };
+  const handleDeleteBoard = async (boardId)=> {
+    try {
+      const deletedBoard = await deleteBoard(boardId);
+      console.log(deletedBoard)
+      navigate("/")
     } catch (error) {
       console.log(error);
     }
