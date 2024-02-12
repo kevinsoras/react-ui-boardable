@@ -3,7 +3,7 @@ import { authProvider } from "../auth";
 import { URL_BASE } from "../constants";
 
 
-export async function createBoardCar(boardListId,boardCard) {
+export async function createBoardCard(boardListId,boardCard) {
   const url = `${URL_BASE}/board_list/${boardListId}`;
   const token = authProvider.token;
 

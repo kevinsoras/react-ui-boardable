@@ -2,25 +2,42 @@ import { useState } from "react";
 import Options from "../Options/Options";
 import styles from "./styles.module.css";
 import Item from "./Item.jsx/Item";
+import { createBoardCard } from "../../services/BoardCard.service";
 
-function ListItems({ listDetails }) {
+function ListItems({listDetails }) {
   const [add, setAdd] = useState(true);
-
+  const [listCards,setListCards]=useState(listDetails)
   const handleCreateCard = async (event) => {
     event.preventDefault();
-
+    const formData = new FormData(event.target); // Crear un objeto FormData con el formulario
+    const title = formData.get("title");
+    //
+    try {
+      const createdCard = await createBoardCard(listDetails.id, { title });
+      const addCard = {
+        id: createdCard.id,
+        title: createdCard.title,
+        orders: listCards.cards.length+1,
+      };
+      const newListCards = {...listCards};
+      newListCards.cards=[...newListCards.cards,addCard]
+      setListCards(newListCards);
+      setAdd(true)
+    } catch (error) {
+      console.log(error);
+    }
     event.target.reset();
   };
   return (
     <>
       <div className={styles.container}>
         <div className={styles["box-title"]}>
-          <input value={listDetails.title} className={styles.title} />
+          <input value={listCards.title} className={styles.title} />
           <Options></Options>
         </div>
-        <div className={styles['list-card']}>
-          {listDetails.cards.map((card) => {
-            return <Item  key={card.id} card={card}></Item>;
+        <div className={styles["list-card"]}>
+          {listCards.cards.map((card) => {
+            return <Item key={card.id} card={card}></Item>;
           })}
         </div>
         <div className={styles["box-add"]}>
