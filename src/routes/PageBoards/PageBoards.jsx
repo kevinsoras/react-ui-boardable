@@ -7,7 +7,7 @@ import styles from "./styles.module.css";
 import Options from "../../components/Options/Options";
 import ListItems from "../../components/ListItems/ListItems";
 import { Fragment, useState } from "react";
-import { createListBoard } from "../../services/BoardList.service";
+import { createListBoard, deleteBoardList } from "../../services/BoardList.service";
 
 export async function loader({ request }) {
   if (!authProvider.isAuthenticated) {
@@ -55,8 +55,19 @@ function PageBoards() {
       console.log(error);
     }
     event.target.reset();
-
   };
+  const handleDeleteListDetail = async (listBoardId)=>{
+    //
+    try {
+      const deletedBoardList = await deleteBoardList(listBoardId);
+      const newBoardListDetails=boardsListDetails.filter((listDetail)=>
+        listDetail.id !=deletedBoardList.id
+      )
+      setBoardsListDetails(newBoardListDetails)
+    } catch (error) {
+      console.log(error);
+    }
+  }
   return (
     <>
       <div className={styles.section}>
@@ -70,7 +81,7 @@ function PageBoards() {
             {boardsListDetails.map((listDetail, index) => {
               return (
                 <Fragment key={listDetail.id}>
-                  <ListItems listDetails={listDetail}></ListItems>
+                  <ListItems handleDeleteListDetail={handleDeleteListDetail} listDetails={listDetail}></ListItems>
                   {index === 2 && (
                     <form
                       onSubmit={handleCreateListBoard}

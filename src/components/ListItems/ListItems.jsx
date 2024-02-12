@@ -4,7 +4,7 @@ import styles from "./styles.module.css";
 import Item from "./Item.jsx/Item";
 import { createBoardCard } from "../../services/BoardCard.service";
 
-function ListItems({listDetails }) {
+function ListItems({listDetails,handleDeleteListDetail }) {
   const [add, setAdd] = useState(true);
   const [listCards,setListCards]=useState(listDetails)
   const handleCreateCard = async (event) => {
@@ -28,12 +28,18 @@ function ListItems({listDetails }) {
     }
     event.target.reset();
   };
+  const handleOptions = async (option)=>{
+    console.log(option)
+    if(option=="delete") await handleDeleteListDetail(listDetails.id)
+
+  }
+
   return (
     <>
       <div className={styles.container}>
         <div className={styles["box-title"]}>
           <input value={listCards.title} className={styles.title} />
-          <Options></Options>
+          <Options handleEvent={handleOptions}></Options>
         </div>
         <div className={styles["list-card"]}>
           {listCards.cards.map((card) => {
